@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="./assets/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/CustomScrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+</head>
+
+<style>
+    html,
+    body {
+        margin: 0;
+        height: 100%;
+        background-color: #222;
+        color: #bbb;
+        padding: 10px 0;
+    }
+    
+    .body-wrapper {
+        width: 100%;
+        min-width: 1200px;
+        height: 100%;
+        display: flex;
+    }
+    
+    .content {
+        width: 50%;
+        height: 100%;
+        border-right: 1px solid rgba(0, 0, 0, 0.9);
+        text-align: center;
+    }
+    
+    .content:last-of-type {
+        border-right: none;
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .content h3 {
+        color: #6bdaea;
+    }
+    
+    hr {
+        margin: 20px;
+        box-sizing: border-box;
+        background-color: transparent;
+        height: 0;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        border-top: 1px solid rgba(0, 0, 0, 0.9);
+        clear: both;
+    }
+    
+    .form-wrapper {
+        padding: 20px 40px;
+        height: 800px;
+    }
+    
+    .form-wrapper form {
+        padding: 50px;
+        text-align: left;
+        border-radius: 5px;
+        height: 650px;
+        background-color: #333333;
+    }
+    
+    .chart-wrapper {
+        padding: 20px 40px;
+        height: 800px;
+        position: relative;
+    }
+    
+    .chart {
+        border-radius: 5px;
+        height: 650px;
+        background-color: #ddd;
+    }
+    
+    #prompt {
+        position: absolute;
+        padding: 0 20px;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        font-size: 24px;
+        top: 50px;
+        left: 50%;
+        width: 400px;
+        margin-left: -200px;
+        color: #333;
+        border: 2px dashed green;
+    }
+    
+    #prompt span {
+        font-size: 14px;
+        color: #999;
+    }
+</style>
+
+
+<body>
+    <div class="body-wrapper">
+        <div class="content">
+            <h3>提交文章内容</h2>
+                <hr>
+                <div class="form-wrapper mCustomScrollbar" data-mcs-theme="rounded">
+                    <div class="alert alert-danger alert-dismissible hide" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong> 文章标题或内容不能为空！</strong>
+                    </div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="title" class="col-sm-2 control-label">文章标题</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="title" class="form-control" id="title" placeholder="标题">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">文章内容</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="content" rows="20" placeholder="为了获取准确的分析结果，请按段落手动换行......"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10 text-right">
+                                <button type="reset" class="btn btn-danger">重置</button>
+                                <button type="button" class="btn btn-success">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        </div>
+        <div class="content">
+            <h3>分析结果展示</h2>
+                <hr>
+                <div class="chart-wrapper">
+                    <div id="prompt">提交文章即可查看结果<br><span>以下为示例图</span></div>
+                    <div class="chart mCustomScrollbar" data-mcs-theme="rounded-dark"><svg></svg></div>
+                </div>
+        </div>
+    </div>
+    <script src="./assets/jquery.min.js"></script>
+    <script src="./assets/CustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="./assets/d3.v3.min.js" charset="utf-8"></script>
+    <script>
+        $(function() {
+            $(".form-wrapper").mCustomScrollbar({
+                axis: "y",
+                autoHideScrollbar: true
+            });
+            $('.close').click(function() {
+                $('.alert').addClass('hide');
+            })
+
+            var width = 600;
+            var height = 600;
+            var nodes = [{
+                name: "根节点0"
+            }, {
+                name: "子节点1"
+            }, {
+                name: "子节点2"
+            }, {
+                name: "子节点3"
+            }, {
+                name: "子节点11"
+            }, {
+                name: "子节点12"
+            }, {
+                name: "子节点13"
+            }];
+
+            var edges = [{
+                source: 0,
+                target: 1
+            }, {
+                source: 0,
+                target: 2
+            }, {
+                source: 0,
+                target: 3
+            }, {
+                source: 1,
+                target: 4
+            }, {
+                source: 1,
+                target: 5
+            }, {
+                source: 1,
+                target: 6
+            }];
+            initChart(width, height, nodes, edges);
+
+            $('.btn-success').click(function() {
+                var title = $("input[name='title']").val();
+                var content = $("textarea").val();
+                if (!title || !content) {
+                    $('.alert strong').html('文章标题或内容不能为空！');
+                    $('.alert').removeClass('hide');
+                    return false;
+                } else {
+                    $.ajax({
+                        url: 'ServiceServlet',
+                        type: 'POST',
+                        data: {
+                            title: title,
+                            content: content
+                        },
+                        success: function(data) {                        	
+                        	data=$.parseJSON(data);                        
+                              /* data = {
+                                 nodes: [{
+                                     name: "心脏病"
+                                 }, {
+                                     name: "症状"
+                                 }, {
+                                     name: "症状1"
+                                 }, {
+                                     name: "症状2"
+                                 }, {
+                                     name: "症状3"
+                                 }],
+                                 edges: [{
+                                     source: 0,
+                                     target: 1
+                                 }, {
+                                     source: 1,
+                                     target: 2
+                                 }, {
+                                     source: 1,
+                                     target: 3
+                                 }, {
+                                     source: 1,
+                                     target: 4
+                                 }]
+                             }; */
+                            $('.chart').html('');
+                            initChart(width, height, data.nodes, data.edges);
+                            //$('#prompt').hide();
+                            $(".chart").mCustomScrollbar({
+                                axis: "yx",
+                                autoHideScrollbar: true
+                            });
+                        },
+                        error: function() {
+                            $('.alert strong').html('提交失败，请稍后重试！');
+                            $('.alert').removeClass('hide');
+                        }
+                    })
+                }
+
+            })
+
+            function initChart(width, height, nodes, edges) {
+                var svg = d3.select(".chart")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height);
+
+                var force = d3.layout.force()
+                    .nodes(nodes) //指定节点数组
+                    .links(edges) //指定连线数组
+                    .size([width, height]) //指定范围
+                    .linkDistance(150) //指定连线长度
+                    .charge(-400); //相互之间的作用力
+
+                force.start(); //开始作用
+
+                //添加连线		
+                var svg_edges = svg.selectAll("line")
+                    .data(edges)
+                    .enter()
+                    .append("line")
+                    .style("stroke", "#999")
+                    .style("stroke-width", 1);
+
+                var color = d3.scale.category20();
+
+                //添加节点			
+                var svg_nodes = svg.selectAll("circle")
+                    .data(nodes)
+                    .enter()
+                    .append("circle")
+                    .attr("r", 25)
+                    .attr("cursor", "pointer")
+                    .style("fill", function(d, i) {
+                        return color(i);
+                    })
+                    .call(force.drag); //使得节点能够拖动
+
+                //添加描述节点的文字
+                var svg_texts = svg.selectAll("text")
+                    .data(nodes)
+                    .enter()
+                    .append("text")
+                    .style("fill", "black")
+                    .attr("dx", 30)
+                    .attr("dy", 10)
+                    .attr("cursor", "pointer")
+                    .text(function(d) {
+                        return d.name;
+                    }).call(force.drag);
+
+                force.on("tick", function() { //对于每一个时间间隔
+
+                    //更新连线坐标
+                    svg_edges.attr("x1", function(d) {
+                            return d.source.x;
+                        })
+                        .attr("y1", function(d) {
+                            return d.source.y;
+                        })
+                        .attr("x2", function(d) {
+                            return d.target.x;
+                        })
+                        .attr("y2", function(d) {
+                            return d.target.y;
+                        });
+
+                    //更新节点坐标
+                    svg_nodes.attr("cx", function(d) {
+                            return d.x;
+                        })
+                        .attr("cy", function(d) {
+                            return d.y;
+                        });
+
+                    //更新文字坐标
+                    svg_texts.attr("x", function(d) {
+                            return d.x;
+                        })
+                        .attr("y", function(d) {
+                            return d.y;
+                        });
+                });
+
+            }
+        });
+    </script>
+</body>
+
+</html>
