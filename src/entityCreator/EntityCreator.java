@@ -13,11 +13,12 @@ public class EntityCreator {
 
 	public EntityCreator(List<node> nodeList) {
 		this.nodeList = nodeList;
-		System.out.println(nodeList.size());
-		for (int i = 0; i < nodeList.size(); i++) {
-			System.out.print(nodeList.get(i).getName() + "  :");
-			System.out.println(nodeList.get(i).getRank());
-		}
+		//System.out.println(nodeList.size());
+//		for (int i = 0; i < nodeList.size(); i++) {
+//			System.out.print(nodeList.get(i).getName() + "  :");
+//			System.out.println(nodeList.get(i).getRank() + "  :");
+//			System.out.println(nodeList.get(i).getContent());
+//		}
 	}
 
 	private void createEntity() {
@@ -49,8 +50,8 @@ public class EntityCreator {
 				}
 			}
 		}
-		System.out.println(nodes.size());
-		System.out.println(edges.size());
+//		System.out.println(nodes.size());
+//		System.out.println(edges.size());
 
 		Document result = new Document("nodes", nodes).append("edges", edges);
 		this.resultJSON = result.toJson();

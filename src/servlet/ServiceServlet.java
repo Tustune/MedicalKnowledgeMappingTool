@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import regularExpression.RegularExpression;
 import regularExpression.node;
-
+import thulac.ThulacCreator;
+import thulac.thulac;
 import entityCreator.EntityCreator;
 
 public class ServiceServlet extends HttpServlet {
@@ -49,11 +50,24 @@ public class ServiceServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
+		String modelsPath = this.getClass().getClassLoader().getResource("../../models").getPath();
 		// 文章处理模块调用正则表达式模块生成的ArrayList用于进行自然语言处理
+		ThulacCreator tc = new ThulacCreator(nodeList,modelsPath);
+		tc.recalNodeList();
+		//tc.test();
 
 		// 本体构建模块生成json格式的信息
 		EntityCreator ec = new EntityCreator(nodeList);
 		String json = ec.getEntity();
+		
+		
+//		thulac tc = new thulac(modelsPath);
+//		try {
+//			tc.thulacCal("/Users/tustunne/Desktop/test.txt");
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		try {
 			PrintWriter out = resp.getWriter();

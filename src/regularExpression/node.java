@@ -1,34 +1,41 @@
 package regularExpression;
 
 public class node {
-    int rank;
-    String name;
-    String content;
+	int rank;
+	String name;
+	String content;
 
-    public node() {
-    }
+	public node() {
+	}
 
-    public int getRank() {
-        return rank;
-    }
+	public node(int i, String string, String string2) {
+		// TODO Auto-generated constructor stub
+		this.rank = rank;
+		this.name = name;
+		this.content = content;
+	}
 
-    public void setRank(int rank) {
-        this.rank = rank;
-    }
+	public int getRank() {
+		return rank;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
 }

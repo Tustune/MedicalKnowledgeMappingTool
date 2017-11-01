@@ -242,13 +242,13 @@ public class RegularExpression {
 		}
 //		System.out.println(
 //				"分界线2_______________________________________________________________________________________________________________________");
-//		for (int i = 0; i < nodeList.size(); i++) {
-//			// for (int j=0;i<n)
-//			System.out.println(i + "rank:" + nodeList.get(i).getRank());
-//			System.out.println(i + "name:" + nodeList.get(i).getName());
-//			System.out.println(i + "content:" + nodeList.get(i).getContent());
-//			System.out.println("_____________");
-//		}
+		for (int i = 0; i < nodeList.size(); i++) {
+			// for (int j=0;i<n)
+			System.out.println(i + "rank:" + nodeList.get(i).getRank());
+			System.out.println(i + "name:" + nodeList.get(i).getName());
+			System.out.println(i + "content:" + nodeList.get(i).getContent());
+			System.out.println("_____________");
+		}
 		return nodeList;
 
 	}
