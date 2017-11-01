@@ -1,0 +1,1 @@
+models文件过大不能提交至github上，models文件是THULAC分词工具所使用的模型文件，分词基于该模型进行，该模型的来源为http://thulac.thunlp.org，如果需要运行项目，该模型文件是必须的
