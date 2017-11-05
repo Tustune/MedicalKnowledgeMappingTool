@@ -41,7 +41,7 @@ public class ThulacAnalysis {
 		try {
 			file = new File(this.tempFilePath);
 			fop = new FileOutputStream(file);
-			// if file doesnt exists, then create it
+			// if file doesn’t exists, then create it
 			if (!file.exists()) {
 				file.createNewFile();
 			}

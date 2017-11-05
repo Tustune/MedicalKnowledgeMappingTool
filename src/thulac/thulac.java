@@ -12,8 +12,6 @@ import manage.Postprocesser;
 import manage.Preprocesser;
 import manage.Punctuation;
 import manage.TimeWord;
-import manage.VerbWord;
-
 import base.POCGraph;
 import base.SegmentedSentence;
 import base.TaggedSentence;
@@ -49,7 +47,7 @@ public class thulac {
 		boolean useFilter = false;
 		int maxLength = 50000;
 		String input_file = "";
-		String output_file = "";
+		//String output_file = "";
 
 		int c = 0;
 		while (c < args.length) {
@@ -69,7 +67,7 @@ public class thulac {
 			} else if (arg.equals("-input")) {
 				input_file = args[++c];
 			} else if (arg.equals("-output")) {
-				output_file = args[++c];
+				//output_file = args[++c];
 			} else {
 				// showhelp();
 				return;
@@ -138,10 +136,10 @@ public class thulac {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		FileOutputStream out = null;
-		if (output_file != "") {
-			out = new FileOutputStream(output_file);
-		}
+//		FileOutputStream out = null;
+//		if (output_file != "") {
+//			out = new FileOutputStream(output_file);
+//		}
 
 		long startTime = System.currentTimeMillis();// 获取当前时间
 		Vector<String> vec = null;
@@ -241,7 +239,7 @@ public class thulac {
 		}
 		long endTime = System.currentTimeMillis();
 		System.out.println("程序运行时间：" + (endTime - startTime) + "ms");
-
+	reader.close();
 	}
 
 	public Vector<String> getRaw(BufferedReader reader, int maxLength) {

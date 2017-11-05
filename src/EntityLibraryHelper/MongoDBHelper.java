@@ -29,6 +29,10 @@ public class MongoDBHelper{
 
 		}
 	}
+	
+	public void closeConnection() {
+		mongoClient.close();
+	}
 
 	public void InsertDocuments(String collectionName, List<Document> documents) {
 		// TODO 插入多行

@@ -26,29 +26,35 @@ public class EntityLibraryHelper {
 		// TODO Auto-generated method stub
 		// 首先获取数据库中对应的collection中的所有内容，目前只有一个document，存储着和这个标签有关的所有信息
 		MongoDBHelper dbHelper = new MongoDBHelper();
-		BasicDBObject query = new BasicDBObject("name", lastNode);
+		System.out.println(lastNode+"----------");
+		BasicDBObject query = new BasicDBObject("name", this.lastNode);
 		if(dbHelper.FindDocumentsBy("MedicalItem",query).size() != 0) {
 			List<String> lastNodeList = (List<String>) dbHelper.FindDocumentsBy("MedicalItem",query).get(0).get(lastNode);
 			if(lastNodeList != null) {
 				// 依次遍历三个List
 				for (int i = 0; i < normal.size(); i++) {
-					if(lastNodeList.contains(normal.get(i)))
+					System.out.println(normal.get(i));
+					if(lastNodeList.contains(normal.get(i)) && (!result.contains(normal.get(i))))
 						result.add(normal.get(i));
 				}
 				for (int i = 0; i < twoWord.size(); i++) {
-					if(lastNodeList.contains(twoWord.get(i)))
+					//System.out.println(twoWord.get(i));
+					if(lastNodeList.contains(twoWord.get(i)) && (!result.contains(twoWord.get(i))))
 						result.add(twoWord.get(i));
 				}
 				for (int i = 0; i < threeWord.size(); i++) {
-					if(lastNodeList.contains(threeWord.get(i)))
+					//System.out.println(threeWord.get(i));
+					if(lastNodeList.contains(threeWord.get(i)) && (!result.contains(threeWord.get(i))))
 						result.add(threeWord.get(i));
 				}
 				for (int i = 0; i < fourWord.size(); i++) {
-					if(lastNodeList.contains(fourWord.get(i)))
+					//System.out.println(fourWord.get(i));
+					if(lastNodeList.contains(fourWord.get(i)) && (!result.contains(fourWord.get(i))))
 						result.add(fourWord.get(i));
 				}
 			}
 		}
+		dbHelper.closeConnection();
 		return this.result;
 	}
 }

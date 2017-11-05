@@ -8,7 +8,7 @@ public class node {
 	public node() {
 	}
 
-	public node(int i, String string, String string2) {
+	public node(int rank, String name, String content) {
 		// TODO Auto-generated constructor stub
 		this.rank = rank;
 		this.name = name;
